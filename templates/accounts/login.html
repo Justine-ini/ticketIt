@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+{% endblock %}
+{% block title %}Login Page{% endblock %}
+{% block content %}
+{% include "includes/navbar.html" %}
+  <main>
+    <section class="form-section">
+        <h2 class="register">Login</h2>
+        <form method="POST" action="{% url 'login' %}">
+          {% csrf_token %}
+
+            <label for="email">Username:</label>
+            <input type="username" id="username" name="username" required {{form.username}}>
+
+          
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required {{form.password}}>
+            
+            <button type="submit" class="cta-button">Login</button>
+        </form>
+        <div>{{form.errors}}</div>
+        {% for message in messages %}
+        <p class="message">{{ message }}</p>
+        {% endfor %}
+        <div>
+          <p style="font-size: 12px; margin-top:20px">Don't have an account? <a href="{% url 'register' %}"><span style="color: blue;">Sign up</span></a></p>
+        </div>
+    </section>
+</main>
+  <!-- FOOTER -->
+{% include "includes/footer.html"%}
+{% endblock content %}
+
+</body>
+</html>

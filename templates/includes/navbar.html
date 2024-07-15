@@ -1,0 +1,22 @@
+{% load static %}
+<header class="header">
+
+  <a href="{% url 'home' %}">
+    <img src="{% static 'images/ticketit_logo1.png' %}" alt="ticketIt logo" class="logo"/>
+  </a>
+  <nav class="main-nav">
+    <ul class="main-nav-list">
+
+      <li><a href="#" class="main-nav-link">ABOUT</a></li>
+      <li><a href="#" class="main-nav-link">CONTACT</a></li>
+      
+      {% if user.is_authenticated %}
+        <li><a href="{% url 'logout' %}" class="main-nav-link">LOGOUT</a></li>
+        <li><a style="border-radius: 50%; padding: .8rem .8rem;" href="" class="main-nav-link nav-cta"><i class="fas fa-user-circle"></i></a></li>
+      {% else %}
+        <li><a href="{% url 'login' %}" class="main-nav-link">LOGIN</a></li>
+        <li><a href="{% url 'register' %}" class="main-nav-link nav-cta">SIGN UP</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+</header>

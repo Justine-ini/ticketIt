@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+{% endblock %}
+{% block title %}HomePage{% endblock %}
+
+{% block content %}
+{% include "includes/navbar.html" %}
+<main>
+  <section class="section-hero">
+    <div class="hero">
+      <div class="hero-text-box">
+        <h1 class="heading-primary">
+          Welcome to <span class="ticketit">TicketIt</span>: Your Partner in
+          Resolving Issues with Businesses
+        </h1>
+        <p class="hero-description">
+          The smart way to connect with businesses and resolve your issues
+          quickly. TicketIt makes it easy to lodge complaints and track
+          resolutions across various business sectors
+        </p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'dashboard'%}" class="btn btn--full margin-right-sm">Share Your Concern</a >
+        {% else %}
+        <a href="{% url 'login' %}" class="btn btn--full margin-right-sm">Share Your Concern</a >
+        {% endif %}
+        <a href="#" class="btn btn--outline">Learn more &darr;</a>
+        <div class="testimonials">'
+          <div class="testimonials-imgs">
+            <img src="{% static 'images/customer-1.jpg' %}" alt="faces of satisfied customers" />
+            <img src="{% static 'images/customer-2.jpg' %}" alt="faces of satisfied customers" />
+            <img src="{% static 'images/customer-3.jpg' %}" alt="faces of satisfied customers" />
+            <img src="{% static 'images/customer-4.jpg' %}" alt="faces of satisfied customers" />
+            <img src="{% static 'images/customer-5.jpg' %}" alt="faces of satisfied customers" />
+            <img src="{% static 'images/customer-6.jpg' %}" alt="faces of satisfied customers" />
+          </div>
+          <p class="testimonial-text">
+            <span class="testimonial-text-number">100,000</span>+ complaints
+            resolved last year!
+          </p>
+        </div>
+      </div>
+      <div class="hero-img-box">
+        <img
+          src="{% static 'images/complaint6.jpg' %}"
+          alt="A woman enjoying food and food bowls on a table"
+          class="hero-img"
+        />
+      </div>
+    </div>
+  </section>
+  <section>
+    <h2 class="how-it-works">How It Works</h2>
+    <div class="steps">
+      <div class="step">
+        <img src="{% static 'images/form.webp' %}" alt="Step 1" />
+        <h3>Step 1: Submit</h3>
+        <p class="step-text">Submit your complaint through our simple form.</p>
+      </div>
+      <div class="step">
+        <img src="{% static 'images/team.jpg' %}" alt="Step 2" />
+        <h3>Step 2: Review</h3>
+        <p class="step-text">Our team reviews and processes your complaint.</p>
+      </div>
+      <div class="step last-img">
+        <img src="{% static 'images/feedback5.avif' %}" alt="Step 3" />
+        <h3>Step 3: Resolve</h3>
+        <p class="step-text">
+          We work towards a resolution and keep you updated.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sectors">
+    <h2>Sectors We Cover</h2>
+    <div class="sector-list">
+      <div class="sector">
+        <img src="{% static 'images/retail8.jpg' %}" alt="Retail" />
+        <h3>Retail</h3>
+        <p>Resolve issues related to product quality, service, and more.</p>
+      </div>
+      <div class="sector">
+        <img src="{% static 'images/banking.jpg' %}" alt="Banking" />
+        <h3>Banking</h3>
+        <p>
+          Handle complaints regarding transactions, services, and customer
+          support.
+        </p>
+      </div>
+      <div class="sector">
+        <img src="{% static 'images/telecom2.jpg' %}" alt="Telecom" />
+        <h3>Telecom</h3>
+        <p>Address issues with connectivity, billing, and customer service.</p>
+      </div>
+      <div class="sector">
+        <img src="{% static 'images/health.jpg' %}" alt="Healthcare" />
+        <h3>Healthcare</h3>
+        <p>Submit complaints about medical services, billing, and treatment.</p>
+      </div>
+      <div class="sector">
+        <img src="{% static 'images/utilities4.jpg' %}" alt="Utilities" />
+        <h3>Utilities</h3>
+        <p>Report issues with electricity, water, and gas services.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section2">
+    <h2>Success Stories</h2>
+    <div class="stories">
+      <div class="story story--left">
+        <div class="story-text">
+          <h3>Elizabeth Ogbe</h3>
+          <p>
+            Efficient resolution! The team addressed my concern promptly and
+            professionally, delivering a swift and satisfying solution.
+          </p>
+        </div>
+        <div class="story-img">
+          <img src="{% static 'images/testimonial1.webp' %}" alt="Happy Customer" />
+        </div>
+      </div>
+      <div class="story story--right">
+        <div class="story-img">
+          <img src="{% static 'images/1704319894063.jpeg' %}" alt="Satisfied Client" />
+        </div>
+        <div class="story-text">
+          <h3>Sam Ediale</h3>
+          <p>
+            Outstanding service! My complaint was handled with professionalism
+            and efficiency. It was resolved within just 24 hours, exceeding my
+            expectations and leaving me highly satisfied.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-form" id="submit-complaint">
+    <h2>Submit Your Complaint</h2>
+    <form action="submit_complaint" method="post">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="sector">Sector:</label>
+      <select id="sector" name="sector" required>
+        <option value="retail">Retail</option>
+        <option value="banking">Banking</option>
+        <option value="telecom">Telecom</option>
+        <option value="healthcare">Healthcare</option>
+        <option value="utilities">Utilities</option>
+      </select>
+
+      <label for="complaint">Complaint:</label>
+      <textarea id="complaint" name="complaint" rows="4" required></textarea>
+
+      <button type="submit" class="btn">Continue</button>
+    </form>
+  </section>
+</main>
+{% include "includes/footer.html"%}
+{% endblock content %}

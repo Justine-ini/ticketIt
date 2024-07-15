@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+  <title>TicketIt</title>
+</head>
+<body>
+  <!-- START HEADER -->
+  <header class="header">
+    <a href="{% url 'home' %}">
+      <img src="{% static 'images/ticketit_logo1.png' %}" alt="ticketIt logo" class="logo"/>
+    </a>
+    <nav class="main-nav">
+      <ul class="main-nav-list">
+        <li><a href="#" class="main-nav-link">ABOUT</a></li>
+        <li><a href="#" class="main-nav-link">CONTACT</a></li>
+        <li><a href="{% url 'logout' %}" class="main-nav-link">LOGOUT</a></li>
+        <li><a href="profile.html" class="main-nav-link nav-cta"><i class="fas fa-user-circle"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+  <!-- {% include "includes/navbar.html" %} -->
+  <!-- END HEADER -->
+<!-- MAIN PAGE -->
+<!-- Welcome Section -->
+<section class="welcome-section">
+  <h2>Welcome, {{user.username}}</h2>
+</section>
+
+  {% for message in messages %}
+  <p class="message">{{ message }}</p>
+  {% endfor %}
+
+<hr>
+<section>
+<!-- Complaint Stats Section -->
+  <div class="flex">
+    <div class="complaint-info">
+      <h2>Total Complaint</h2>
+      <hr class="custom-hr">
+      <p><i class="fas fa-exclamation-circle"></i> {{ total_complaint }}</p>
+    </div>
+    <div class="complaint-info">
+      <h2>Resolved Complaint</h2>
+      <hr class="custom-hr">
+      <p><i class="fas fa-check-circle"></i> {{ resolved_complaint }}</p>
+    </div>
+    <div class="complaint-info">
+      <h2>Pending Complaint</h2>
+      <hr class="custom-hr">
+      <p class="pg"><i class="fas fa-hourglass-half"></i> {{ pending_complaint }}</p>
+    </div>
+    <div class="chart-card">
+      <canvas id="complaintChart"></canvas>
+    </div>
+  </div>
+</section>
+<hr>
+<a href="{% url 'add_company' %}" class="add-btn teal-btn" ><i class="fa fa-plus" aria-hidden="true"></i> Add New Company</i></a>
+
+
+
+<section class="flex2">
+  <div class="contact-form" id="submit-complaint">
+    <h2>Update Your Complaint</h2>
+ 
+    <form action="" method='POST'>
+      {% csrf_token %}
+      <label for="{{ form.title.id_for_label }}">Title:</label>
+      {{ form.title }}
+    
+      <label for="{{ form.user_email.id_for_label }}">Email:</label>
+      {{ form.user_email }}
+    
+      <label for="{{ form.recipient_email.id_for_label }}">Recipient Email:</label>
+      {{ form.recipient_email }}
+    
+      <label for="{{ form.company.id_for_label }}">Company:</label>
+      {{ form.company }}
+    
+      <label for="{{ form.sector.id_for_label }}">Sector:</label>
+      {{ form.sector }}
+    
+      <label for="{{ form.description.id_for_label }}">Complaint:</label>
+      {{ form.description }}
+      <button type="submit" class="btn">Submit</button>
+  </form>
+  </div>
+  
+  <div class="table-container">
+    <h2>Recent Complaints</h2>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Sector</th>
+          <th>Company</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tickets in ticket %}
+        <tr>
+          <td>{{ tickets.id }}</td>
+          <td>{{ tickets.sector.name }}</td>
+          <td><a class="table-container-td" href="{% url 'ticket_detail' tickets.id %}">{{ tickets.company }}</a></td>
+          <td>{{ tickets.status }}</td>
+          <td>{{ tickets.created_at }}</td>
+          <td>
+            
+              <a href="{% url 'ticket_edit' tickets.id %}" class="table-container-edit">
+                <i class="fa fa-edit" aria-hidden="true"></i>
+            </a>
+         </td>
+          <!-- <td>
+            <a href="{% url 'load_page' %}?ticket_id={{ tickets.id }}" class="table-container-edit">
+                <i class="fa fa-edit" aria-hidden="true"></i>
+            </a>
+         </td> -->
+          
+          <td>
+            <form action="{% url 'ticket_delete' tickets.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit">
+                <a href="" class="table-container-delete" onclick="return confirm('Confirm delete?')"><i class="fa fa-trash" aria-hidden="true"></i></a>
+              </button>
+            </form>
+          </td>
+            
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- END MAIN PAGE -->
+  <!-- FOOTER -->
+  {% include "includes/footer.html"%}
+  <!--END FOOTER -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var ctx = document.getElementById('complaintChart').getContext('2d');
+      var complaintChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Retail', 'Banking', 'Telecom', 'Healthcare', 'Utilities'],
+          datasets: [{
+            data: [3, 2, 2, 1, 2],
+            backgroundColor: ['#17a2b8', '#6610f2', '#e83e8c', '#fd7e14', '#20c997']
+          }]
+        },
+        options: {
+          responsive: true,
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+<div>
+  <a href="" class="add-btn-teal">Add Company</a>
+  <a href="" class="add-btn-blue">Add sector</a>
+</div>

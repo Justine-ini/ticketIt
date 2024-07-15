@@ -1,0 +1,30 @@
+/* Basic reset and styling for body */
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to bottom, #008080, #ffffff); /* Teal to white gradient */
+  margin: 0;
+}
+
+/* Container to demonstrate fading contrast */
+.container {
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  background: linear-gradient(to right, #008080, #ffffff); /* Teal to white gradient */
+  color: #333; /* Text color */
+  width: 300px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1rem;
+}

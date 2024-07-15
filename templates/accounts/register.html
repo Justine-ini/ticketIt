@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/register.css' %}" />
+{% endblock %}
+{% block title %}Register Page{% endblock %}
+{% block content %}
+<!-- START HEADER -->
+{% include "includes/navbar.html" %}
+<!-- END HEADER -->
+  <main>
+    <section class="form-section">
+        <h2 class="register">Register</h2>
+        <form method="POST" action="{% url 'register' %}">
+
+          {% csrf_token %}
+          
+          {{form.username.label}}
+          {{form.username}}
+
+          {{form.email.label}}
+          {{form.email}}
+
+          {{form.password1.label}}
+          {{form.password1}}
+
+          {{form.password2.label}}
+          {{form.password2}}
+          <!-- <label  for="name"><span class="labels">Username</span></label>
+          <input type="text" id="name" name="name" required {{form.username}}>
+          
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+          
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required>
+           -->
+            <button type="submit" class="cta-button">Register</button>
+        </form>
+        <p>{{form.errors}}</p>
+        <div>
+          <p style="font-size: 12px; margin-top:10px;">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+        </div>
+    </section>
+</main>
+  <!-- FOOTER -->
+{% include "includes/footer.html"%}
+{% endblock content %}
+
+</body>
+</html>

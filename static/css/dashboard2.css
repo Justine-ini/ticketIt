@@ -1,0 +1,167 @@
+/* styles.css */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 0 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header .logo {
+  display: flex;
+  align-items: center;
+}
+
+.header .logo img {
+  height: 50px;
+  margin-right: 10px;
+}
+
+.header .main-nav ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.header .main-nav ul li {
+  margin: 0 15px;
+}
+
+.header .main-nav ul li a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: 600;
+}
+
+.main {
+  padding: 20px;
+}
+
+.welcome-section {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.welcome-section h2 {
+  font-size: 2rem;
+  color: #007bff;
+}
+
+.stats-section {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.stat-card,
+.chart-card {
+  flex: 1;
+  background-color: #ffffff;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.stat-card h3 {
+  font-size: 1.25rem;
+  color: #495057;
+  margin-bottom: 10px;
+}
+
+.stat-card p {
+  font-size: 2rem;
+  color: #007bff;
+}
+
+.form-section {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+}
+
+.form-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
+.form-section form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section form label {
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #495057;
+}
+
+.form-section form input,
+.form-section form select,
+.form-section form textarea {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.form-section form button {
+  background-color: #007bff;
+  color: #ffffff;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.form-section form button:hover {
+  background-color: #0056b3;
+}
+
+.table-section {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
+.table-section table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-section table th,
+.table-section table td {
+  padding: 12px;
+  border: 1px solid #ced4da;
+  text-align: left;
+}
+
+.table-section table th {
+  background-color: #e9ecef;
+}
+
+.table-section table td {
+  background-color: #ffffff;
+}
