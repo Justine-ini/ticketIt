@@ -133,15 +133,4 @@ MEDIA_URL = '/images/'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-# SMTP CONFIGURATION
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-EMAIL_HOST = "smtp-relay.brevo.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "7886d3002@smtp-brevo.com"
-EMAIL_HOST_PASSWORD = "Gc6Unh8VdINbPk0T"
-DEFAULT_FROM_EMAIL = "7886d3002@smtp-brevo.com"
-SERVER_EMAIL = "7886d3002@smtp-brevo.com"
-EMAIL_SUBJECT_PREFIX = "[ticketIt] "
-EMAIL_TIMEOUT = 20
+

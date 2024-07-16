@@ -252,4 +252,26 @@ def ticket_delete(request, pk):
 
 
 
+def send_test_email(request):
+    subject = 'Test Email'
+    message = 'This is a test email sent using SMTP in Django.'
+    from_email = '7886d3001@smtp-brevo.com'
+    recipient_list = ['nobleini1@yahoo.com', 'inijustine4040@gmail.com']
 
+    send_mail(subject, message, from_email, recipient_list)
+
+
+def send_smtp_mail(from_addr, to_addr_list, subject, email_body):
+    SMTP_SESSION = smtplib.SMTP(settings.EMAIL_HOST, 587)
+    SMTP_SESSION.ehlo()
+    SMTP_SESSION.starttls()
+    SMTP_SESSION.login(settings.EMAIL_HOST_USER, 'Gc6Unh8VdINbPk0T')
+
+    headers = "\r\n".join(["from: " + 'My Test Mail',
+                       "subject: " + subject,
+                       "mime-version: 1.0",
+                       "content-type: text/html"])
+    # body_of_email can be plaintext or html!                    
+    content = headers + "\r\n\r\n" + email_body
+    SMTP_SESSION.sendmail(from_addr, to_addr_list, content)
+    send_smtp_mail(from_addr = settings.EMAIL_HOST_USER, to_addr_list =['nobleini1@yahoo.com'], subject = 'Welcome the site', email_body = 'Thanks for joining our site we are glad that you are here')
