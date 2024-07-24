@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import AddcompanyForm, CreateUserForm, TicketForm
 from .models import Sector, Ticket, UserProfile
@@ -13,6 +14,9 @@ import smtplib
 
 
 def loginPage(request):
+  if request.user.is_authenticated:
+     return redirect('home')
+
   if request.method == 'POST':
     username = request.POST.get("username")
     password = request.POST.get("password")
@@ -21,19 +25,23 @@ def loginPage(request):
     if user is not None:
       login(request, user)
       return redirect("dashboard")
+    else:
+        messages.error(request, "Invalid username or password")
 
   return render(request, "accounts/login.html")
 
 def register(request):
+  if request.user.is_authenticated:
+     return redirect('home')
   form = CreateUserForm()
   if request.method == 'POST':
     form = CreateUserForm(request.POST)
     if form.is_valid():
       username = form.cleaned_data.get('username')
       form.save()
-      messages.success(request, username +' your account has been successfully created!' )
+      messages.success(request, f'Account created for {username}! You can now log in.')
       return redirect('login')
-#
+
   context = {
     'form': form,
   }
@@ -46,6 +54,7 @@ def about(request):
 def contact(request):
    return render(request, "contact.html")
 
+@login_required
 def add_company(request):
   if request.method == 'POST':
     form = AddcompanyForm(request.POST)
@@ -61,6 +70,7 @@ def add_company(request):
   return render(request, "accounts/add_company.html", context)    
 
 
+@login_required
 def ticket_edit(request, pk):
 # Retrieve the current user
   user = request.user
@@ -124,12 +134,14 @@ def get_company_email_view(request):
     email = get_company_email(company_name)
     return JsonResponse({'email': email})
 
+
 # All Tickets
+@login_required
 def ticket_detail(request, pk):
   tickets = get_object_or_404(Ticket, pk=pk)
   return render(request, 'accounts/ticket_detail.html', {'tickets': tickets})
 
-
+@login_required
 def dashboard(request):
     # Retrieve the current user
     user = request.user
@@ -178,7 +190,7 @@ def dashboard(request):
     return render(request, 'accounts/dashboard.html', context)
 
 
-
+@login_required
 def view_profile(request, username):
   user = get_object_or_404(User, username=username)
   profile = get_object_or_404(UserProfile, user=user)
@@ -190,6 +202,8 @@ def logoutView(request):
   messages.info(request, "You are logged out")
   return redirect("login")
 
+
+@login_required
 def ticket(request, pk):
   ticket = get_object_or_404(Ticket, pk=pk)
 
@@ -198,7 +212,7 @@ def ticket(request, pk):
   }
   return render(request, "accounts/dashboard.html", context)
 
-
+@login_required
 def update_ticket(request, pk):
     ticket = get_object_or_404(Ticket, pk=pk)
     if request.method == 'POST':
@@ -212,6 +226,7 @@ def update_ticket(request, pk):
      
 
 # @login_required
+@login_required
 def ticket_list(request):
   
   user = request.user
@@ -232,6 +247,7 @@ def ticket_list(request):
 
 
 # @login_required
+@login_required
 def ticket_delete(request, pk):
   ticket = get_object_or_404(Ticket, pk=pk)
   if request.method == 'POST':

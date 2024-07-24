@@ -10,6 +10,10 @@
 <!-- END HEADER -->
   <main>
     <section class="form-section">
+      <div class="message">{{form.errors}}</div>
+        {% for message in messages %}
+        <p class="message">{{ message }}</p>
+        {% endfor %}
         <h2 class="register">Register</h2>
         <form method="POST" action="{% url 'register' %}">
 
@@ -37,7 +41,6 @@
            -->
             <button type="submit" class="cta-button">Register</button>
         </form>
-        <p>{{form.errors}}</p>
         <div>
           <p style="font-size: 12px; margin-top:10px;">Already have an account? <a href="{% url 'login' %}">Login</a></p>
         </div>
