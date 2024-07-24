@@ -2,9 +2,11 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import AddcompanyForm, CreateUserForm, TicketForm, UserProfileForm
-from .models import Company, Sector, Ticket, UserProfile
+from .forms import AddcompanyForm, CreateUserForm, TicketForm
+from .models import Sector, Ticket, UserProfile
 from django.contrib.auth.models import User
+from django.http import JsonResponse
+from .utils import get_company_email
 
 from django.core.mail import send_mail
 import smtplib
@@ -27,21 +29,11 @@ def register(request):
   if request.method == 'POST':
     form = CreateUserForm(request.POST)
     if form.is_valid():
-    #   
-    #   email = form.cleaned_data['email']
-    #   password = form.cleaned_data['password']
-    #   user = User.objects.create_user( username=username, email=email, password=password)
-    #   user.save()
-        username = form.cleaned_data.get('username')
-        form.save()
-        messages.success(request, username +' your account has been successfully created!' )
-        return redirect('login')
-#       return redirect('login')
-#     else:
-#         print('invalid form')
-#         print(form.errors)
-#   else:
-#     form = CreateUserForm()
+      username = form.cleaned_data.get('username')
+      form.save()
+      messages.success(request, username +' your account has been successfully created!' )
+      return redirect('login')
+#
   context = {
     'form': form,
   }
@@ -63,42 +55,28 @@ def add_company(request):
   return render(request, "accounts/add_company.html", context)    
 
 
-def create_ticket(request):
-  print("checking request type")
-  if request.method == 'POST':
-      print("request method is post")
-      # Create a form instance with the POST data
-      form = TicketForm(request.POST)
-      
-      # Check if the form is valid
-      if form.is_valid():
-          print("form is valid")
-          
-          # Create a Ticket instance without saving to the database yet
-          ticket = form.save(commit=False)
-          
-          # Set the user_email field value explicitly
-          ticket.user_email = request.user.email
-          
-          # Save the Ticket instance to the database
-          ticket.save()
-          print("form is saved")
-          
-          # Display a success message to the user
-          messages.success(request, "Your Form is Submitted Successfully!")
-          
-          # Redirect the user to the 'ticket_list' page
-          return redirect('dashboard')
-  else:
-      # Create a form instance with the initial user_email value
-      form = TicketForm(initial={'user_email': request.user.email})
-      print("form is either not valid or saved")
-  
-  # Render the form in the 'accounts/dashboard.html' template
-  return render(request, 'accounts/dashboard.html', {'form': form})
-
-
 def ticket_edit(request, pk):
+# Retrieve the current user
+  user = request.user
+
+  # Retrieve all sectors and tickets
+  sectors = Sector.objects.all()
+  tickets = Ticket.objects.all()
+
+  # Calculate the total, resolved, and pending complaints
+  total_complaint = tickets.count()
+  resolved_complaint = tickets.filter(status=True).count()
+  pending_complaint = tickets.filter(status=False).count()
+
+  # Initialize the context dictionary
+  context = {
+      "user": user,
+      "ticket": tickets,
+      "total_complaint": total_complaint,
+      "resolved_complaint": resolved_complaint,
+      "pending_complaint": pending_complaint,
+      "sector": sectors,
+  }
   ticket = get_object_or_404(Ticket, pk=pk)
   form = TicketForm(instance=ticket)
   print("checking request type")
@@ -122,7 +100,7 @@ def ticket_edit(request, pk):
           print("form is saved")
           
           # Display a success message to the user
-          messages.success(request, "Your Form is Updated Successfully!")
+          messages.success(request, "Your Complaint has Updated and Successfully Sent!")
           
           # Redirect the user to the 'ticket_list' page
           return redirect('dashboard')
@@ -130,11 +108,15 @@ def ticket_edit(request, pk):
   else:
       # Create a form instance with the initial user_email value
       form = TicketForm(initial={'user_email': request.user.email}, instance=ticket)
-      print("form is either not valid or saved")
+      context['form'] = form
   
   # Render the form in the 'accounts/dashboard.html' template
-  return render(request, 'accounts/ticket_edit.html', {'form': form})
+  return render(request, 'accounts/ticket_edit.html', context)
 
+def get_company_email_view(request):
+    company_name = request.GET.get('company')
+    email = get_company_email(company_name)
+    return JsonResponse({'email': email})
 
 # All Tickets
 def ticket_detail(request, pk):
@@ -176,7 +158,7 @@ def dashboard(request):
             # Save the ticket instance to the database
             ticket.save()
             # Display success message
-            messages.success(request, "Your Form is Submitted Successfully!")
+            messages.success(request, "Your Complaint is Submitted Successfully!")
             # Redirect to the dashboard
             return redirect('dashboard')
     else:
@@ -188,6 +170,8 @@ def dashboard(request):
 
     # Render the dashboard template with the context
     return render(request, 'accounts/dashboard.html', context)
+
+
 
 def view_profile(request, username):
   user = get_object_or_404(User, username=username)
@@ -246,6 +230,7 @@ def ticket_delete(request, pk):
   ticket = get_object_or_404(Ticket, pk=pk)
   if request.method == 'POST':
       ticket.delete()
+      messages.success(request, "Deleted Successfully!")
       return redirect('dashboard')
 
   return render(request, 'accounts/dashboard.html', {'ticket': ticket})
@@ -275,3 +260,10 @@ def send_smtp_mail(from_addr, to_addr_list, subject, email_body):
     content = headers + "\r\n\r\n" + email_body
     SMTP_SESSION.sendmail(from_addr, to_addr_list, content)
     send_smtp_mail(from_addr = settings.EMAIL_HOST_USER, to_addr_list =['nobleini1@yahoo.com'], subject = 'Welcome the site', email_body = 'Thanks for joining our site we are glad that you are here')
+
+
+def scrape_WebSite(request):
+  company_name = get_company_email(request.GET.get('company_name'))
+  print(company_name)
+  return JsonResponse({'company_name': company_name})
+

@@ -232,6 +232,26 @@ main {
   margin: 2rem;
 }
 
+.back-arrow {
+  display: inline-block;
+  padding: 1rem 1rem;
+  margin: 1rem 2rem;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  /* color: #333; */
+  text-decoration: none;
+  border-radius: 4px;
+  background-color: #b8651b;
+  /* background-color: #fdf2e9; */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.back-arrow:hover {
+  background-color: #e67e22;
+  color: #fff;
+}
+
 
 .flex{
   display: flex;
@@ -304,8 +324,9 @@ main {
   text-decoration: none;
   color: #fff;
   padding: 1rem 2rem;
-  margin-left: 5rem;
-  margin-top: 3rem;
+  margin-left: 42%;
+  margin-top: 1rem;
+  /* margin: 3rem auto; */
   font-size: 1.5rem;
   border-radius: 1rem;
   font-weight: 600;

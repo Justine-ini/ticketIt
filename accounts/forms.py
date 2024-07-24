@@ -25,7 +25,12 @@ class AddcompanyForm(forms.ModelForm):
     fields = ["name"]
 
 class TicketForm(ModelForm):
-  # user_email = forms.EmailField(disabled=True)  # Add this field and set disabled=True
+  # recipient_email = forms.EmailField()  # Add this field and set disabled=True
+  recipient_email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'placeholder': 'The email automatically appears'
+        })
+    )
 
   class Meta:
     model = Ticket

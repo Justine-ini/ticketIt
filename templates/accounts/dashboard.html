@@ -71,11 +71,11 @@
 
 <section class="flex2">
   <div class="contact-form" id="submit-complaint">
-    <h2>Update Your Complaint</h2>
+    <h2>Send Us Your Complaint</h2>
  
     <form action="" method='POST'>
       {% csrf_token %}
-      <label for="{{ form.title.id_for_label }}">Title:</label>
+      <label for="{{ form.title.id_for_label }}">Subject:</label>
       {{ form.title }}
     
       <label for="{{ form.user_email.id_for_label }}">Email:</label>
@@ -125,16 +125,12 @@
                 <i class="fa fa-edit" aria-hidden="true"></i>
             </a>
          </td>
-          <!-- <td>
-            <a href="{% url 'load_page' %}?ticket_id={{ tickets.id }}" class="table-container-edit">
-                <i class="fa fa-edit" aria-hidden="true"></i>
-            </a>
-         </td> -->
+
           
           <td>
             <form action="{% url 'ticket_delete' tickets.id %}" method="post">
               {% csrf_token %}
-              <button type="submit">
+              <button type="submit" style="border:none">
                 <a href="" class="table-container-delete" onclick="return confirm('Confirm delete?')"><i class="fa fa-trash" aria-hidden="true"></i></a>
               </button>
             </form>
@@ -170,7 +166,23 @@
           }
         }
       });
+     
     });
+
+    window.onload=function() {
+      document.getElementById("id_company").onchange = function(evt){
+        
+        const callServer = async() => await scrapeWebSite(evt.currentTarget.options[evt.currentTarget.selectedIndex].text);
+          callServer();
+      }
+      async function scrapeWebSite(searchParam){
+        var httpResponse = await fetch("/accounts/scrape-website?company_name="+searchParam);
+        var scrapedData = await httpResponse.json();
+        const receipientEmail = document.getElementById("id_recipient_email");
+        receipientEmail.value = scrapedData.company_name;
+      }
+
+    }
   </script>
 </body>
 </html>

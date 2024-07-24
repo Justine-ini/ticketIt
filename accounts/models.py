@@ -10,17 +10,7 @@ class UserProfile(models.Model):
   
   def __str__(self):
     return self.user.username
-
-class Company(models.Model):
-  name = models.CharField(max_length=100)
-  created_at = models.DateTimeField(auto_now_add=True)
-
-  class Meta:
-    verbose_name = "Account Company"
-    verbose_name_plural = "Companies"
-
-  def __str__(self):
-    return f"{self.name}"
+  
 
 class Sector(models.Model):
   SECTOR_CHOICES = (
@@ -36,10 +26,22 @@ class Sector(models.Model):
     choices=SECTOR_CHOICES,
     unique=True
   )
-  company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='sectors')
+  # company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='sectors')
 
   def __str__(self):
     return dict(self.SECTOR_CHOICES).get(self.name, self.name)
+  
+class Company(models.Model):
+  name = models.CharField(max_length=100)
+  sector = models.ForeignKey(Sector, on_delete=models.DO_NOTHING, related_name='company', null=True)
+  created_at = models.DateTimeField(auto_now_add=True)
+
+  class Meta:
+    verbose_name = "Account Company"
+    verbose_name_plural = "Companies"
+
+  def __str__(self):
+    return f"{self.name}"
 
 class Ticket(models.Model):
   title = models.CharField(max_length=100, null=True)

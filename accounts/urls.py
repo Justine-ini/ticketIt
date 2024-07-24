@@ -10,13 +10,14 @@ urlpatterns = [
     path("dashboard/", views.dashboard, name="dashboard"),
     path('profile/<str:username>/', views.view_profile, name='profile'),
     path("ticket_list/", views.ticket_list, name="ticket_list"),
-    path('create_ticket/', views.create_ticket, name='create_ticket'),
+    # path('create_ticket/', views.create_ticket, name='create_ticket'),
 
     path('ticket_detail/<int:pk>/', views.ticket_detail, name='ticket_detail'),
     path('ticket_delete/<int:pk>/', views.ticket_delete, name='ticket_delete'),
     path('ticket_edit/<int:pk>/', views.ticket_edit, name='ticket_edit'),
 
     path('add_company/', views.add_company, name='add_company'),
+    path('scrape-website/', views.scrape_WebSite, name='scrape_website'),
 
     path('reset_password/', auth_views.PasswordResetView.as_view(), name='reset_password'),
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),

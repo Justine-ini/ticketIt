@@ -63,6 +63,12 @@
   </div>
 </section>
 <hr>
+<div>
+  <a href="javascript:history.back()" class="back-arrow">
+  &larr; Back
+  </a>
+</div>
+
 <a href="{% url 'add_company' %}" class="add-btn teal-btn" ><i class="fa fa-plus" aria-hidden="true"></i> Add New Company</i></a>
 
 
@@ -73,7 +79,7 @@
  
     <form method='POST' action="">
       {% csrf_token %}
-      <label for="{{ form.title.id_for_label }}">Title:</label>
+      <label for="{{ form.title.id_for_label }}">Subject:</label>
       {{ form.title }}
     
       <label for="{{ form.user_email.id_for_label }}">Email:</label>
@@ -90,7 +96,7 @@
     
       <label for="{{ form.description.id_for_label }}">Complaint:</label>
       {{ form.description }}
-      <button type="submit" class="btn">Update</button>
+      <button type="submit" class="btn">Update and Send</button>
   </form>
   </div>
   
