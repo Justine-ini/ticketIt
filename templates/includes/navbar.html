@@ -7,8 +7,8 @@
   <nav class="main-nav">
     <ul class="main-nav-list">
 
-      <li><a href="#" class="main-nav-link">ABOUT</a></li>
-      <li><a href="#" class="main-nav-link">CONTACT</a></li>
+      <li><a href="{% url 'about' %}" class="main-nav-link">ABOUT</a></li>
+      <li><a href="#contact-form" class="main-nav-link">CONTACT</a></li>
       
       {% if user.is_authenticated %}
         <li><a href="{% url 'logout' %}" class="main-nav-link">LOGOUT</a></li>

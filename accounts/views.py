@@ -40,6 +40,12 @@ def register(request):
 
   return render(request, "accounts/register.html", context)
 
+def about(request):
+   return render(request, "about.html")
+
+def contact(request):
+   return render(request, "contact.html")
+
 def add_company(request):
   if request.method == 'POST':
     form = AddcompanyForm(request.POST)
@@ -267,3 +273,18 @@ def scrape_WebSite(request):
   print(company_name)
   return JsonResponse({'company_name': company_name})
 
+
+def submit_complaint(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        subject = request.POST['subject']
+        message = request.POST['message']
+
+        send_mail(
+            subject,
+            message,
+            email,
+            [settings.CONTACT_EMAIL],
+            fail_silently=False,
+        )
+        return redirect('contact')

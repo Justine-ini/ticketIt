@@ -21,8 +21,9 @@
     </a>
     <nav class="main-nav">
       <ul class="main-nav-list">
-        <li><a href="#" class="main-nav-link">ABOUT</a></li>
-        <li><a href="#" class="main-nav-link">CONTACT</a></li>
+        <li><a href="{% url 'about' %}" class="main-nav-link">ABOUT</a></li>
+        <!-- <li><a href="" class="main-nav-link">CONTACT</a></li> -->
+        <li><a href="{% url 'home' %}#contact-form" class="main-nav-link">CONTACT</a></li>
         <li><a href="{% url 'logout' %}" class="main-nav-link">LOGOUT</a></li>
         <li><a href="profile.html" class="main-nav-link nav-cta"><i class="fas fa-user-circle"></i></a></li>
       </ul>

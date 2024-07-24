@@ -28,7 +28,7 @@ class TicketForm(ModelForm):
   # recipient_email = forms.EmailField()  # Add this field and set disabled=True
   recipient_email = forms.EmailField(
         widget=forms.EmailInput(attrs={
-            'placeholder': 'The email automatically appears'
+            'placeholder': "The recipient's email is auto-filled after a system search"
         })
     )
 
